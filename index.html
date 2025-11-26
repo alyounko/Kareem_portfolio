@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kareem Alshowaiter Portfolio | Academic Works</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables: Modern Dark Theme --- */
+        :root {
+            --bg-deep: #0f172a;
+            --bg-surface: #1e293b;
+            --primary-text: #f8fafc;
+            --secondary-text: #94a3b8;
+            --accent-color: #38bdf8; /* Light Blue */
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --gold: #fbbf24;
+            
+            --card-glass: rgba(30, 41, 59, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* --- Global Reset & Typography --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--primary-text);
+            line-height: 1.8;
+            overflow-x: hidden; /* Prevent horizontal scroll from parallax elements */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-text);
+            line-height: 1.1;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- Floating Parallax Background Elements --- */
+        .parallax-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            will-change: transform;
+        }
+
+        .shape-1 {
+            width: 500px;
+            height: 500px;
+            background: #4f46e5;
+            top: -10%;
+            left: -10%;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: #0ea5e9;
+            bottom: 20%;
+            right: -5%;
+        }
+
+        .shape-3 {
+            width: 300px;
+            height: 300px;
+            background: #d946ef;
+            top: 40%;
+            left: 30%;
+            opacity: 0.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-glass);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.4s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+            color: var(--primary-text);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-glass);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            color: var(--secondary-text);
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .header-btn {
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--primary-text);
+            border: 1px solid var(--border-glass);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: var(--primary-text);
+            color: var(--bg-deep);
+            border-color: var(--primary-text);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        /* The actual parallax image */
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%; /* Taller than container for parallax movement */
+            /* UPDATED: Using a high-quality texture/abstract background instead of personal photo */
+            background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), var(--bg-deep)), url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            will-change: transform;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0; /* JS Fade in */
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards 0.2s;
+        }
+
+        .hero p {
+            font-size: 1.35rem;
+            color: var(--secondary-text);
+            margin-bottom: 40px;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards 0.4s;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 42px;
+            background: linear-gradient(135deg, var(--accent-color), #0284c7);
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 10px 30px -10px var(--accent-glow);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards 0.6s;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 40px -10px var(--accent-glow);
+        }
+
+        /* --- Section Styling --- */
+        section {
+            padding: 120px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 80px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            width: 120%;
+            height: 15px;
+            bottom: 5px;
+            left: -10%;
+            background-color: var(--accent-glow);
+            z-index: 1;
+            border-radius: 4px;
+            transform: skewX(-20deg);
+        }
+
+        /* --- About Section (Side-by-Side Parallax) --- */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .image-wrapper {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            /* Important for parallax effect on scroll */
+            transition: transform 0.1s linear; 
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .image-wrapper:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text {
+            /* Parallax speed for text */
+            position: relative;
+        }
+
+        .about-text h3 {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            color: var(--accent-color);
+        }
+
+        .about-text p {
+            font-size: 1.15rem;
+            color: var(--secondary-text);
+            margin-bottom: 24px;
+        }
+
+        /* --- Essay Grid --- */
+        .essay-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .essay-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            padding: 40px;
+            transition: all 0.4s var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            
+            /* Initial state for scroll animation */
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .essay-card:hover {
+            transform: translateY(-10px);
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px -20px var(--accent-glow);
+        }
+
+        .essay-meta {
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .essay-meta::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background-color: var(--accent-color);
+        }
+
+        .essay-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .essay-excerpt {
+            color: var(--secondary-text);
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+            flex-grow: 1;
+        }
+
+        .card-btn {
+            padding: 12px 0;
+            text-align: center;
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            transition: 0.3s;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .card-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: var(--bg-deep);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #020617;
+            padding: 80px 0;
+            margin-top: 100px;
+            text-align: center;
+            border-top: 1px solid var(--border-glass);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        footer a {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        footer p.copyright {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+        }
+
+        /* --- Animations Keyframes --- */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 850px) {
+            .hero h1 { font-size: 3rem; }
+            nav { flex-direction: column; height: auto; padding: 20px 0; gap: 20px; }
+            .nav-links { gap: 15px; }
+            .header-btn { display: none; }
+            
+            .about-content { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .image-wrapper { max-width: 400px; margin: 0 auto; }
+            .essay-grid { grid-template-columns: 1fr; }
+            
+            /* Disable aggressive parallax on mobile for performance */
+            .floating-shape { display: none; } 
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating Background Shapes for Global Parallax -->
+    <div class="parallax-wrapper">
+        <div class="floating-shape shape-1" data-speed="0.2"></div>
+        <div class="floating-shape shape-2" data-speed="-0.15"></div>
+        <div class="floating-shape shape-3" data-speed="0.1"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <!-- PERSONAL IMAGE: photo2.jpg for Logo -->
+                    <img src="photo2.jpg" alt="Profile">
+                    Kareem Alshowaiter
+                </div>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#portfolio">Essays</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <a href="#contact" class="header-btn">Get in Touch</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <!-- BACKGROUND IMAGE: Unsplash Academic Texture -->
+        <div class="hero-bg" data-speed="0.5"></div>
+        
+        <div class="container hero-content">
+            <h1>Writing with Purpose</h1>
+            <p>Welcome to my academic portfolio. Exploring themes of sociology, modern literature, and digital ethics through a critical lens.</p>
+            <a href="#portfolio" class="btn">Explore My Work</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="about-content">
+                <!-- Image moves faster than text (data-speed) -->
+                <div class="image-wrapper" data-speed="0.1">
+                    <!-- PERSONAL IMAGE: photo1.jpg for About Me -->
+                    <img src="photo1.jpg" alt="Kareem Working">
+                </div>
+                <div class="about-text" data-speed="-0.05">
+                    <h2 class="section-title" style="display:inline-block; margin-bottom: 30px; left: 0; transform: none; font-size: 2.5rem;"><span>About Me</span></h2>
+                    <h3>Hello, I'm Kareem.</h3>
+                    <p>I am a Junior majoring in English Literature with a minor in Sociology. My academic focus is on how digital media shapes modern storytelling and community structures. I believe that understanding our narratives is the key to understanding our future.</p>
+                    <p>When I'm not researching, I'm contributing to the college newspaper, organizing local poetry slams, and exploring the city's independent bookstores.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <div class="container">
+            <h2 class="section-title"><span>Selected Essays</span></h2>
+            <div class="essay-grid">
+
+                <article class="essay-card fade-card">
+                    <div>
+                        <div class="essay-meta">ENGL 114-05</div>
+                        <h3>Identity in Bleach</h3>
+                        <p class="essay-excerpt">Identity and Psychological Representation in Tite Kubo’s Bleach. An analysis of shonen tropes and internal conflict.</p>
+                    </div>
+                    <!-- LINK: Preserved original link -->
+                    <a href="essay.html?id=1" class="card-btn">Read Essay</a>
+                </article>
+
+                <article class="essay-card fade-card">
+                    <div>
+                        <div class="essay-meta">SOC 201 • Fall 2025</div>
+                        <h3>The Art of Failing</h3>
+                        <p class="essay-excerpt">"YOU DIED": The sociological impact of difficulty in Elden Ring and how community resilience forms online.</p>
+                    </div>
+                    <!-- LINK: Preserved original link -->
+                    <a href="essay.html?id=2" class="card-btn">Read Essay</a>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <h3>Thanks for visiting</h3>
+            <a href="kaal89288@hbku.edu.qa">kaal89288@hbku.edu.qa</a>
+            <p class="copyright">&copy; 2025 Kareem Alshowaiter.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Global Parallax Logic ---
+        // Select all elements that should move on scroll
+        const parallaxElements = document.querySelectorAll('[data-speed]');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            parallaxElements.forEach(el => {
+                const speed = el.getAttribute('data-speed');
+                
+                // For Hero Background: standard vertical parallax
+                if(el.classList.contains('hero-bg')) {
+                    el.style.transform = `translateY(${scrollY * speed}px)`;
+                } 
+                // For other elements: move relative to viewport for smoother effect
+                else {
+                    el.style.transform = `translateY(${scrollY * speed}px)`;
+                }
+            });
+        });
+
+        // --- 2. Intersection Observer for Fade In Animation ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px" // Trigger slightly before element comes into view
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Add delay based on index for staggered effect
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 150); // 150ms delay between cards
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        const cards = document.querySelectorAll('.fade-card');
+        cards.forEach(card => observer.observe(card));
+
+        // --- 3. Dynamic Cursor Effect (Optional Polish) ---
+        // Adds subtle glow interaction on the hero section
+        const heroSection = document.querySelector('.hero');
+        heroSection.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            // Move the hero content slightly opposite to mouse
+            const content = document.querySelector('.hero-content');
+            content.style.transform = `translate(-${x * 15}px, -${y * 15}px)`;
+        });
+    </script>
+
+</body>
+</html>
