@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --bg-surface: #1e293b;
+            --primary-text: #f8fafc;
+            --secondary-text: #94a3b8;
+            --accent-color: #38bdf8;
+            --border-glass: rgba(255, 255, 255, 0.08);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--primary-text);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            width: 100%;
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-glass);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 90px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.5px;
+        }
+        .nav-links a {
+            font-size: 0.95rem;
+            color: var(--secondary-text);
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+        .project-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .project-image-wrapper {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .project-image-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <a href="index.html">Kareem Alshowaiter</a>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html#portfolio">Back to Portfolio</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main class="project-container" id="project-content">
+        <!-- Project content will be loaded here -->
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectContent = document.getElementById('project-content');
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+
+            const projects = {
+                '1': {
+                    title: 'Transformation Project',
+                    image: 'Transformation project.jpg'
+                }
+            };
+
+            const projectData = projects[projectId];
+
+            if (projectData) {
+                let contentHtml = `
+                    <h1 class="project-title">${projectData.title}</h1>
+                    <div class="project-image-wrapper">
+                        <img src="${projectData.image}" alt="${projectData.title}">
+                    </div>
+                `;
+                projectContent.innerHTML = contentHtml;
+                document.title = projectData.title + " | Kareem Alshowaiter";
+            } else {
+                projectContent.innerHTML = '<h1 class="project-title">Project Not Found</h1>';
+            }
+        });
+    </script>
+</body>
+</html>
