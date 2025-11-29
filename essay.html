@@ -136,6 +136,12 @@
                 padding: 30px;
             }
         }
+        
+        /* New: Optimized Reading Flow for Readability */
+        .reading-flow {
+            max-width: 700px; /* Optimal reading width */
+            margin: 0 auto; /* Center the text block */
+        }
 
         /* --- Header Styling --- */
         .essay-header {
@@ -166,11 +172,13 @@
         .essay-content {
             font-size: 1.15rem;
             color: #e2e8f0; /* Slightly softer white for reading */
+            /* Added line height adjustment for better spacing */
+            line-height: 1.75; 
         }
 
         .essay-content p {
             margin-bottom: 24px;
-            text-align: justify;
+            text-align: left; /* Changed from justify for better mobile rendering and fewer hyphenation issues */
         }
 
         .essay-content h2, .essay-content h3 {
@@ -213,7 +221,7 @@
                 <p id="essay-subtitle">Loading Course Info...</p>
             </header>
             
-            <main id="essay-content" class="essay-content">
+            <main id="essay-content" class="essay-content reading-flow">
                 <div class="status-msg">Loading essay content...</div>
             </main>
         </article>
@@ -221,16 +229,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Updated mapping to reflect the 4 essays from the index.html grid
             const essays = {
                 1: {
-                    title: "Research Essay",
-                    subtitle: "ENGL 114-05",
-                    file: 'essay1.txt'
+                    title: "The Modern Condition", // From Revised Essay 1
+                    subtitle: "Revised Draft • 2025",
+                    file: 'revised essay 1.txt'
                 },
                 2: {
-                    title: "Analysis Essay",
-                    subtitle: "SOC 201 • October 24, 2025",
-                    file: 'essay2.txt'
+                    title: "Literacy Narrative", // From Revised Literacy...
+                    subtitle: "Narrative • ENGL 101",
+                    file: 'Revised Literacy Narrative Essay.txt'
+                },
+                3: {
+                    title: "Analytical Perspectives", // From Analysis Essay.txt
+                    subtitle: "Critical Analysis • Fall 2025",
+                    file: 'Analysis Essay.txt'
+                },
+                4: {
+                    title: "Professional Cover Letter", // From Cover letter.txt
+                    subtitle: "Application Document",
+                    file: 'Cover letter.txt'
                 }
             };
 
@@ -239,23 +258,32 @@
             const essay = essays[essayId];
 
             if (essay) {
+                // Initial load: Use placeholder titles until file is fetched
                 document.getElementById('essay-title').textContent = essay.title;
                 document.getElementById('essay-subtitle').textContent = essay.subtitle;
                 document.title = `${essay.title} | Kareem Alshowaiter`;
                 
-                fetch(essay.file)
+                // Use the correct filename dynamically
+                fetch(essay.file) 
                     .then(response => {
                         if (!response.ok) throw new Error('Network response was not ok');
                         return response.text();
                     })
                     .then(text => {
-                        const content = parseEssay(text);
+                        const content = parseEssay(text, essay.title);
                         document.getElementById('essay-content').innerHTML = content;
+                        
+                        // Set the actual title/subtitle from the file's first lines if needed
+                        const lines = text.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
+                        if (lines.length > 0) {
+                            // If the file starts with the essay title/type, use that for the H1
+                            document.getElementById('essay-title').textContent = lines[0];
+                        }
                     })
                     .catch(error => {
                         console.error('Error fetching essay:', error);
                         document.getElementById('essay-content').innerHTML = 
-                            '<div class="status-msg">Error: Could not load the essay file. <br> Please ensure essay1.txt or essay2.txt exists.</div>';
+                            '<div class="status-msg">Error: Could not load the essay file. <br> Please ensure all `.txt` files exist.</div>';
                     });
 
             } else {
@@ -266,59 +294,57 @@
             }
         });
 
-        function parseEssay(text) {
-            // Split the text into lines
-            const lines = text.split(/\r?\n/);
+        function parseEssay(text, expectedTitle) {
+            const lines = text.split(/\r?\n/).map(line => line.trim());
+            let htmlContent = '';
+            let currentParagraph = '';
             
-            // Find the start of the essay (the title) and the end (Works Cited or Outline)
-            let startIndex = -1;
-            let endIndex = -1;
-
-            // Updated logic to catch "Research Essay" or "Analysis Essay" or just start at the beginning if not found
-            const titleLine = lines.findIndex(line => line.trim().length > 0 && (line.includes('Research Essay') || line.includes('Analysis Essay')));
+            // 1. Skip Initial Title/Header lines (already handled in HTML header)
+            let contentStarted = false;
+            let startIndex = 0;
             
-            if (titleLine !== -1) {
-                // Find the first non-empty line after the title line
-                 for (let i = titleLine + 1; i < lines.length; i++) {
-                    if (lines[i].trim().length > 0) {
-                        startIndex = i;
-                        break;
-                    }
-                 }
-            } else {
-                // Fallback: Start from first non-empty line if no specific title header found in text
-                startIndex = lines.findIndex(line => line.trim().length > 0);
-            }
-
-            const endKeywords = ['Works cited:', 'Outline:', 'Topic:', 'References:'];
-            for (let i = startIndex; i < lines.length; i++) {
-                if (endKeywords.some(keyword => lines[i].trim().startsWith(keyword))) {
-                    endIndex = i;
+            // Find the start of the content body: skip the first few non-empty lines that match the title/header format
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                if (line.length > 0 && line.toLowerCase().includes(expectedTitle.toLowerCase())) {
+                    // Skip the line containing the title
+                    continue; 
+                }
+                if (line.length > 0 && !contentStarted) {
+                    // This is the first line of the actual body content
+                    startIndex = i;
+                    contentStarted = true;
                     break;
                 }
             }
             
-            if (startIndex === -1) {
-                return '<p class="status-msg">Content appears to be empty.</p>';
+            if (!contentStarted) {
+                return '<p class="status-msg">Content appears to be empty or formatted incorrectly.</p>';
             }
 
-            // If no end index is found, take everything until the end.
-            const essayLines = endIndex === -1 ? lines.slice(startIndex) : lines.slice(startIndex, endIndex);
+            // 2. Process the main body content, wrapping each group of non-empty lines in a <p> tag.
+            for(let i = startIndex; i < lines.length; i++) {
+                const line = lines[i];
+                
+                // Stop if end markers are found
+                const endKeywords = ['Works cited:', 'Outline:', 'Topic:', 'References:'];
+                if (endKeywords.some(keyword => line.toLowerCase().startsWith(keyword.toLowerCase()))) {
+                    break;
+                }
 
-            // Join the lines back together, wrapping each paragraph in <p> tags.
-            let htmlContent = '';
-            let currentParagraph = '';
-            
-            for(const line of essayLines) {
-                if(line.trim() === '') {
+                if(line === '') {
+                    // End of a paragraph
                     if(currentParagraph.length > 0) {
                         htmlContent += `<p>${currentParagraph.trim()}</p>`;
                         currentParagraph = '';
                     }
                 } else {
+                    // Continuation of a paragraph. Use a space separator.
                     currentParagraph += line + ' ';
                 }
             }
+            
+            // Flush the last paragraph if it wasn't ended by a blank line
             if(currentParagraph.length > 0) {
                 htmlContent += `<p>${currentParagraph.trim()}</p>`;
             }

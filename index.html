@@ -355,10 +355,10 @@
             margin-bottom: 24px;
         }
 
-        /* --- Essay Grid --- */
+/* --- Essay Grid & Cards Updated --- */
         .essay-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
@@ -367,15 +367,14 @@
             backdrop-filter: blur(12px);
             border: 1px solid var(--border-glass);
             border-radius: var(--radius-md);
-            padding: 40px;
+            /* Removed padding here to let image touch edges */
+            padding: 0; 
             transition: all 0.4s var(--transition-smooth);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
+            overflow: hidden; /* Ensures image stays within rounded corners */
             
-            /* Initial state for scroll animation */
+            /* Animation Init */
             opacity: 0;
             transform: translateY(40px);
         }
@@ -387,53 +386,56 @@
             box-shadow: 0 20px 40px -20px var(--accent-glow);
         }
 
+        /* New Poster Image Class */
+        .card-poster {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-glass);
+            transition: transform 0.5s ease;
+        }
+
+        .essay-card:hover .card-poster {
+            transform: scale(1.05);
+        }
+
+        /* Wrapper for the text content */
+        .card-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Pushes button to bottom */
+        }
+
         .essay-meta {
             font-size: 0.75rem;
             color: var(--accent-color);
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .essay-meta::before {
-            content: '';
-            width: 30px;
-            height: 1px;
-            background-color: var(--accent-color);
-        }
-
         .essay-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 16px;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
             color: #fff;
+            line-height: 1.3;
         }
 
         .essay-excerpt {
             color: var(--secondary-text);
-            margin-bottom: 30px;
-            font-size: 1.05rem;
-            flex-grow: 1;
+            margin-bottom: 25px;
+            font-size: 1rem;
         }
 
-        .card-btn {
-            padding: 12px 0;
-            text-align: center;
-            border: 1px solid var(--border-glass);
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            transition: 0.3s;
-            background: rgba(255,255,255,0.03);
-        }
-
-        .card-btn:hover {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-            color: var(--bg-deep);
+        /* Wrapper for button to ensure padding */
+        .card-action-area {
+            padding: 0 25px 30px 25px;
+            margin-top: auto;
         }
 
         /* --- Footer --- */
@@ -521,7 +523,7 @@
         
         <div class="container hero-content">
             <h1>Writing with Purpose</h1>
-            <p>Welcome to my academic portfolio. Exploring themes of sociology, modern literature, and digital ethics through a critical lens.</p>
+            <p>Welcome to my academic portfolio, where I explore identity, psychology, and storytelling across personal narrative, modern media, and digital culture.</p>
             <a href="#portfolio" class="btn">Explore My Work</a>
         </div>
     </section>
@@ -537,8 +539,8 @@
                 <div class="about-text" data-speed="-0.05">
                     <h2 class="section-title" style="display:inline-block; margin-bottom: 30px; left: 0; transform: none; font-size: 2.5rem;"><span>About Me</span></h2>
                     <h3>Hello, I'm Kareem.</h3>
-                    <p>I am a Junior majoring in English Literature with a minor in Sociology. My academic focus is on how digital media shapes modern storytelling and community structures. I believe that understanding our narratives is the key to understanding our future.</p>
-                    <p>When I'm not researching, I'm contributing to the college newspaper, organizing local poetry slams, and exploring the city's independent bookstores.</p>
+                    <p>I am a Freshman studying in Hamad Bin Khalifa University, majoring in Mechanical Engineering with interests in technology.</p>
+                    <p>learning theory, video game design, and storytelling.</p>
                 </div>
             </div>
         </div>
@@ -546,33 +548,69 @@
 
     <section id="portfolio">
         <div class="container">
-            <h2 class="section-title"><span>Selected Essays</span></h2>
+            <h2 class="section-title"><span>Academic Works</span></h2>
             <div class="essay-grid">
 
                 <article class="essay-card fade-card">
-                    <div>
-                        <div class="essay-meta">ENGL 114-05</div>
-                        <h3>Identity in Bleach</h3>
-                        <p class="essay-excerpt">Identity and Psychological Representation in Tite Kubo’s Bleach. An analysis of shonen tropes and internal conflict.</p>
+                    <div style="overflow:hidden;">
+                        <img src="Poster1.jpg" class="card-poster" alt="Writing Concept">
                     </div>
-                    <!-- LINK: Preserved original link -->
-                    <a href="essay.html?id=1" class="card-btn">Read Essay</a>
+                    <div class="card-content">
+                        <div class="essay-meta">Revised Draft • 2025</div>
+                        <h3>The Modern Condition</h3>
+                        <p class="essay-excerpt">A revised exploration of contemporary societal shifts. Based on "Revised Essay 1.txt".</p>
+                    </div>
+                    <div class="card-action-area">
+                        <a href="essay.html?id=1" class="card-btn" style="display:block;">Read Essay</a>
+                    </div>
                 </article>
 
                 <article class="essay-card fade-card">
-                    <div>
-                        <div class="essay-meta">SOC 201 • Fall 2025</div>
-                        <h3>The Art of Failing</h3>
-                        <p class="essay-excerpt">"YOU DIED": The sociological impact of difficulty in Elden Ring and how community resilience forms online.</p>
+                    <div style="overflow:hidden;">
+                        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=800&auto=format&fit=crop" class="card-poster" alt="Library Books">
                     </div>
-                    <!-- LINK: Preserved original link -->
-                    <a href="essay.html?id=2" class="card-btn">Read Essay</a>
+                    <div class="card-content">
+                        <div class="essay-meta">Narrative • ENGL 101</div>
+                        <h3>Literacy Narrative</h3>
+                        <p class="essay-excerpt">Reflecting on the personal journey of learning and language. Based on "Revised Literacy...".</p>
+                    </div>
+                    <div class="card-action-area">
+                        <a href="essay.html?id=2" class="card-btn" style="display:block;">Read Essay</a>
+                    </div>
+                </article>
+
+                <article class="essay-card fade-card">
+                    <div style="overflow:hidden;">
+                        <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=800&auto=format&fit=crop" class="card-poster" alt="Analysis Concept">
+                    </div>
+                    <div class="card-content">
+                        <div class="essay-meta">Critical Analysis</div>
+                        <h3>Analytical Perspectives</h3>
+                        <p class="essay-excerpt">Deconstructing key themes and rhetorical devices. Based on "Analysis Essay.txt".</p>
+                    </div>
+                    <div class="card-action-area">
+                        <a href="essay.html?id=3" class="card-btn" style="display:block;">Read Essay</a>
+                    </div>
+                </article>
+
+                <article class="essay-card fade-card">
+                    <div style="overflow:hidden;">
+                        <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=800&auto=format&fit=crop" class="card-poster" alt="Typewriter">
+                    </div>
+                    <div class="card-content">
+                        <div class="essay-meta">Professional</div>
+                        <h3>Cover Letter</h3>
+                        <p class="essay-excerpt">A formal introduction outlining academic achievements and intent. Based on "Cover letter.txt".</p>
+                    </div>
+                    <div class="card-action-area">
+                        <a href="essay.html?id=4" class="card-btn" style="display:block;">View Letter</a>
+                    </div>
                 </article>
 
             </div>
         </div>
     </section>
-
+    
     <footer id="contact">
         <div class="container">
             <h3>Thanks for visiting</h3>
